@@ -7,8 +7,8 @@
           <div class='type'><i class='el-icon-goods'></i></div>
           <el-dropdown @command="handleCommand" class='type'>
             <span class="el-dropdown-link">
-                          En
-                          </span>
+                            En
+                            </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="中文">中文</el-dropdown-item>
               <el-dropdown-item command="英文">英文</el-dropdown-item>
@@ -16,9 +16,20 @@
             </el-dropdown-menu>
           </el-dropdown>
           <div class='type'><i class='el-icon-message
-                         '></i></div>
+                           '></i></div>
+          <el-dropdown @command="handleCommand" class='type'>
+            <span class="el-dropdown-link">
+                            En
+                            </span>
+            <el-dropdown-menu slot="dropdown">
+              <p>你有4条消息</p>
+              <el-dropdown-item command="">第一条消息</el-dropdown-item>
+              <el-dropdown-item command="">第一条消息</el-dropdown-item>
+            
+            </el-dropdown-menu>
+          </el-dropdown>
           <div class='type'><i class='el-icon-edit-outline
-                                                  '></i></div>
+                                                    '></i></div>
         </div>
       </div>
       <div class='TabCon'>
@@ -67,10 +78,10 @@
     // },
     mounted() {
       window.addEventListener('scroll', this.handleScroll);
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         console.log('222')
         this.offsetTop = document.querySelector('#boxFixed').offsetTop;
-console.log(this.offsetTop)
+        console.log(this.offsetTop)
       })
       var heightCss = window.getComputedStyle(this.$refs.ele).height;
       console.log(heightCss)
@@ -80,12 +91,10 @@ console.log(this.offsetTop)
       window.removeEventListener('scroll', this.handleScroll);
     },
     methods: {
-       initHeight () {
+      initHeight() {
         var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
         this.isFixed = scrollTop > this.offsetTop ? true : false;
       },
-
-
       handleClick(tab, event) {
         console.log(tab, event);
       },
@@ -103,16 +112,14 @@ console.log(this.offsetTop)
       width: 100%;
       display: flex;
       flex-direction: column;
-    position: fixed;
-    top: 0;
-   
-    z-index: 999;
+      position: fixed;
+      top: 0;
+      z-index: 999;
     }
   }
-  .is_fixed{
+  .is_fixed {
     position: fixed;
     top: 0;
-   
     z-index: 999;
   }
   .header {
@@ -140,14 +147,14 @@ console.log(this.offsetTop)
   }
   .TabCon {
     background: white;
-    padding: 10px 30px;
+    padding: 10px 20px;
     .TabChoose {
       display: flex;
       align-items: center;
     }
     .tab {
       display: inline-block;
-      padding: 5px 12px;
+      padding: 5px 20px;
       border-radius: 28px;
     }
   }
@@ -155,11 +162,15 @@ console.log(this.offsetTop)
     color: #2c3e50;
     text-decoraction: none;
     font-weight: bold;
+    margin-left: 10px;
     &.router-link-exact-active {
       color: #fff;
       background: #1989fa;
       padding: 5px;
       border-radius: 25px;
+    }
+    &:not(:first-child) {
+      margin-left: 40px;
     }
   }
 </style>

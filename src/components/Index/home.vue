@@ -32,7 +32,7 @@
               </el-col>
               <el-col :span="16">
                 <div class='mainNum'>
-                  <strong>234444</strong>
+                  <strong>2344</strong>
                   <span>当前IVR在线客户数</span>
                 </div>
               </el-col>
@@ -45,7 +45,7 @@
               </el-col>
               <el-col :span="16">
                 <div class='mainNum'>
-                  <strong>234444</strong>
+                  <strong>1234</strong>
                   <span>当前IVR服务在线客户数</span>
                 </div>
               </el-col>
@@ -319,7 +319,7 @@
             trigger: 'axis'
           },
           legend: {
-            data: ['意向', '预购', '成交']
+            data: ['接通数', '对话时长']
           },
           toolbox: {
             show: true,
@@ -347,52 +347,66 @@
           xAxis: [{
             type: 'category',
             boundaryGap: false,
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+            data: ['一组', '二组', '三组', '四组', '五组', '六组', '七组']
           }],
           yAxis: [{
             type: 'value'
           }],
           series: [{
-              name: '成交',
+              name: '接通数',
               type: 'line',
               smooth: true,
+              symbol: 'none',
               itemStyle: {
                 normal: {
+                  color: "rgba(179,127,235,0.5)",
                   areaStyle: {
-                    type: 'default'
+                    type: 'default',
+    
+                    width: 2,
                   }
                 }
               },
-              data: [10, 12, 21, 54, 260, 830, 710]
+              data: [3, 10, 21, 54, 100, 49, 32],
+              areaStyle: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [{
+                    offset: 0,
+                    color: 'rgba(179,127,235,0.5)' // 0% 处的颜色
+                  }, {
+                    offset: 0.5,
+                    color: 'rgba(179,127,235,0.3)' // 100% 处的颜色
+                  }, {
+                    offset: 1,
+                    color: 'rgba(179,127,235,0.1)' // 100% 处的颜色
+                  }],
+                  global: false // 缺省为 false
+                }
+              }
             },
             {
-              name: '预购',
+              name: '对话时长',
               type: 'line',
               smooth: true,
               itemStyle: {
                 normal: {
+                  color: '#b6eeff',
                   areaStyle: {
-                    type: 'default'
+                    type: 'default',
+                    width:2
                   }
                 }
               },
-              data: [30, 182, 434, 791, 390, 30, 10]
+              data: [5, 10, 20, 30, 40, 60, 100],
+              
             },
-            {
-              name: '意向',
-              type: 'line',
-              smooth: true,
-              itemStyle: {
-                normal: {
-                  areaStyle: {
-                    type: 'default'
-                  }
-                }
-              },
-              data: [1320, 1132, 601, 234, 120, 90, 20]
-            }
           ]
-        })
+        }, )
       }
     },
     components: {}
@@ -406,8 +420,8 @@
   .bg-blue.yellow {
     background: #ffcf2a;
   }
-  .bg-blue.skyblue{
-    background:#57c8f4;
+  .bg-blue.skyblue {
+    background: #57c8f4;
   }
   .bg-blue {
     background: #ff6d60;
@@ -417,7 +431,6 @@
     justify-content: center;
   }
   .grid-content {
-   
     height: 120px;
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
   }
@@ -426,7 +439,7 @@
   }
   .row-bg {
     background-color: #f9fafc;
-    margin-bottom:20px;
+    margin-bottom: 20px;
   }
   .home {
     width: 100%;
@@ -436,7 +449,6 @@
   .home-wrappper {
     padding: 15px 30px;
     width: 100%;
-   
   }
   .right {
     flex: 1;
@@ -453,7 +465,6 @@
     padding: 15px;
   }
   .exhale {
-   
     height: 350px;
   }
   .exhale-main {
@@ -471,10 +482,9 @@
   }
   .mainNum>strong {
     font-size: 32px;
-     line-height:45px;
+    line-height: 45px;
   }
-  .manyi{
-   
-    background:white;
+  .manyi {
+    background: white;
   }
 </style>
