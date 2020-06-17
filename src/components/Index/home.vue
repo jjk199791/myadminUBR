@@ -1,16 +1,19 @@
 <template>
   <div class="home" :style="top=mes">
     <el-row type='flex' class='home-wrappper'>
-      <el-col :span='4' class='Notice'>
+      <el-col :span='5' class='Notice'>
         <b>通知公告</b>
-        <el-timeline style='margin-top:20px;'>
+        <el-timeline style='height:380px;overflow:hidden;margin-top:20px' id='timeline'>
           <el-timeline-item v-for="(activity, index) in activities" :key="index" :icon="activity.icon" :type="activity.type" :color="activity.color" :size="activity.size" :timestamp="activity.timestamp">
             {{activity.content}}
           </el-timeline-item>
         </el-timeline>
-        <div class></div>
+        <el-divider v-if='activities.length>7' @click='showMore()'>
+          <span style='cursor:pointer'>{{flag?'点击查看':'点击收起'}}</span>
+          <i :class="flag?'el-icon-caret-bottom':'el-icon-caret-top'" style='font-size:20px;'></i>
+        </el-divider>
       </el-col>
-      <el-col :span='19' class='right'>
+      <el-col :span='18' class='right'>
         <el-row type="flex" class="row-bg" justify="space-between">
           <el-col :span="6" class="grid-content">
             <el-row type="flex" class='exhale-main'>
@@ -54,22 +57,24 @@
         </el-row>
         <el-tabs type="border-card" class='exhale'>
           <el-tab-pane label="电话呼出量">
-            <div id="myChart2" :style="{width:'1200px',height:'320px'}"></div>
+            <div id="myChart2" :style="{width:'1400px',height:'350px'}"></div>
           </el-tab-pane>
           <el-tab-pane label="平均呼出量">定时任务补偿</el-tab-pane>
         </el-tabs>
       </el-col>
     </el-row>
     <el-row type='flex' class='home-wrappper'>
-      <el-col :span='4' class='manyi'>
-        <div id="myChart1" class="myChart" :style="{width: '300px',height:'300px'}"></div>
+      <el-col :span='5' class='manyi'>
+        <div id="myChart4" :style="{width:'400px',height:'300px',}"></div>
       </el-col>
-      <el-col :span='18' class='right'>
+      <el-col :span='17' class='right'>
         <el-tabs type="border-card" class='exhale'>
           <el-tab-pane label="当天接听量">
-            <div id="myChart3" :style="{width:'1200px',height:'320px'}"></div>
+            <div id="myChart3" :style="{width:'1400px',height:'320px'}"></div>
           </el-tab-pane>
-          <el-tab-pane label="当天通话总长">定时任务补偿</el-tab-pane>
+          <el-tab-pane label="当天通话总长">
+            <div id="myChart1" :style="{width:'400px',height:'320px'}"></div>
+          </el-tab-pane>
         </el-tabs>
       </el-col>
     </el-row>
@@ -84,122 +89,182 @@
     data() {
       return {
         mes: 0,
+        flag: true,
+        // 通告数据
         activities: [{
-            content: '外呼呼出中心客服服务系统',
+            content: '宿舍四十五分呼出中心客服服务系统',
             timestamp: '1 hours ago',
-            size: 'large',
             type: 'primary',
-            icon: 'el-icon-goods'
           }, {
-            content: '外呼呼出中心客服服务系统',
+            content: '各个啥啊带的饭地方中心客服服务系统',
             timestamp: '5 hours ago',
-            color: 'rgb',
-            size: 'large',
             type: 'primary',
-            icon: 'el-icon-folder-openede'
           }, {
-            content: '外呼呼出中心客服服务系统',
+            content: '地方规划色粉的的中心客服服务系统',
             timestamp: '10 hours ago',
-            size: 'large',
             type: 'primary',
-            icon: 'el-icon-tickets'
           }, {
-            content: '外呼呼出中心客服服务系统',
+            content: '发订单生是是是法人产中心客服服务系统',
             timestamp: '2 days ago',
-            size: 'large',
             type: 'primary',
-            icon: 'el-icon-brush'
           },
           {
-            content: '外呼呼出中心客服服务系统',
+            content: '耳朵防弹少年团客服服务系统',
             timestamp: '10 hours ago',
-            size: 'large',
             type: 'primary',
-            icon: 'el-icon-tickets'
           }, {
-            content: '外呼呼出中心客服服务系统',
+            content: '生产呼出中心客服服务系统',
             timestamp: '2 days ago',
-            size: 'large',
             type: 'primary',
-            icon: 'el-icon-brush'
-          }
-        ],
-        pie: {
-          tooltip: { // 图例的 tooltip 配置，配置项同 legend.tooltip。默认不显示，可以在 legend 文字很多的时候对文字做裁剪并且开启 tooltip
-            trigger: 'item',
-            // formatter: '{a} <br/>{b}: {c} ({d}%)'
           },
-          itemWidth: '5', // 图例标记的图形宽度
-          textStyle: {},
-          legend: { // 图例
-            orient: 'vertical',
-            x: 'right',
-            icon: 'round', // 和data里面的icon类型，设置的是所有icon
-            data: [{ // 图例的数据可以是对象或者字符串类型
-              name: '直接访问', // 图例项的名称，应等于某系列的name值（如果是饼图，也可以是饼图单个数据的 name）
-              // 强制设置图形为圆。
-              icon: 'circle', // 'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none'
-              // 设置文本为红色
-              textStyle: { // 图例项的文本样式。
-                color: 'red'
-              }
-            }, '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+          {
+            content: '生产呼出中心客服服务系统',
+            timestamp: '2 days ago',
+            type: 'primary',
+          }, {
+            content: '生产呼出中心客服服务系统',
+            timestamp: '2 days ago',
+            type: 'primary',
+          }, {
+            content: '生产呼出中心客服服务系统',
+            timestamp: '2 days ago',
+            type: 'primary',
+          },
+        ],
+        //满意度
+        manyi: {
+          // backgroundColor: 'rgba(0,0,0,.1)',
+          title: {
+            text: '满意度排名',
+            left: 'center',
+            top: 20,
+            textStyle: {
+              color: 'black'
+            }
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+          },
+          visualMap: {
+            show: false,
+            min: 80,
+            max: 600,
+            inRange: {
+              colorLightness: [0, 1]
+            }
           },
           series: [{
             name: '访问来源',
             type: 'pie',
-            radius: ['45%', '60%'],
-            avoidLabelOverlap: false,
-            label: {
-              normal: {
-                show: false,
-                position: 'center'
-              },
-              emphasis: {
-                show: true,
-                textStyle: {
-                  fontSize: '15',
-                  fontWeight: 'bold'
-                }
-              }
-            },
-            labelLine: {
-              normal: {
-                show: false
-              }
-            },
+            radius: '55%',
+            center: ['50%', '50%'],
             data: [{
                 value: 335,
-                name: '直接访问'
+                name: 'Voice'
               },
               {
                 value: 310,
-                name: '邮件营销'
+                name: 'Chat'
               },
-              {
-                value: 234,
-                name: '联盟广告'
+            ].sort(function(a, b) {
+              return a.value - b.value;
+            }),
+            roseType: 'radius',
+            label: {
+              color: 'rgba(255, 255, 255, 0.3)'
+            },
+            labelLine: {
+              lineStyle: {
+                color: 'rgba(255, 255, 255, 0.3)'
+              },
+              smooth: 0.2,
+              length: 10,
+              length2: 20
+            },
+            itemStyle: {
+              color: '#c23531',
+              shadowBlur: 200,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            },
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function(idx) {
+              return Math.random() * 200;
+            }
+          }]
+        },
+        manyidu: {
+          title: {
+            text: '满意度排名',
+            // subtext: '纯属虚构',
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+          },
+          legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['Chat', 'Voice']
+          },
+          series: [{
+            name: '访问来源',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            data: [{
+                value: 335,
+                name: 'Chat'
               },
               {
                 value: 135,
-                name: '视频广告'
-              },
-              {
-                value: 1548,
-                name: '搜索引擎'
+                name: 'Voice'
               }
             ],
-            itemStyle: { // 设置实例颜色
-              normal: {
-                color: function(params) {
-                  // 自定义颜色
-                  var colorList = [
-                    '#FFC069', '#FFBB96', '#95DE64', '#5CDBD3', '#69C0FF',
-                  ]
-                  return colorList[params.dataIndex]
-                }
-              },
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
             }
+          }]
+        },
+        self: {
+          color: ['#3398DB'],
+          title: {
+            text: '本组工作量',
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: { // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '20%',
+            containLabel: true
+          },
+          xAxis: [{
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            axisTick: {
+              alignWithLabel: true
+            }
+          }],
+          yAxis: [{
+            type: 'value'
+          }],
+          series: [{
+            name: '直接访问',
+            type: 'bar',
+            barWidth: '60%',
+            data: [10, 52, 200, 334, 390, 330, 220]
           }]
         }
       }
@@ -210,17 +275,40 @@
         this.mes = mes;
       })
     },
+    computed: {},
     mounted() {
-      this.drawLine1()
+      this.drawLineManyi()
       this.drawLine();
       this.drawLine3();
+      this.drawLine4()
     },
     methods: {
-      drawLine1() {
+      showMore() {
+        if (this.flag == true) {
+          document.getElementById('timeline').style.height = 'auto';
+          this.flag = !this.flag
+        } else {
+          document.getElementById("timeline").style.height = "380px"
+          this.flag = !this.flag
+        }
+      },
+      //满意度
+      drawLineManyi() {
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById('myChart1'))
         // 绘制图表
-        myChart.setOption(this.pie)
+        myChart.setOption(this.manyi)
+        window.onresize = function() {
+          myChart.resize();
+        }
+      },
+      drawLine4() {
+        let myChart4 = this.$echarts.init(document.getElementById('myChart4'))
+        // 绘制图表
+        myChart4.setOption(this.manyidu)
+        window.onresize = function() {
+          myChart4.resize(); //若有多个图表变动，可多写
+        }
       },
       handleCommand(command) {
         this.$message('click on item ' + command);
@@ -229,98 +317,34 @@
         // 基于准备好的dom，初始化echarts实例
         let myChart2 = this.$echarts.init(document.getElementById('myChart2'))
         // 绘制图表
-        myChart2.setOption({
-          title: {
-            show: true, //显示折线图
-            text: '简单折线图', //标题文字
-            //link: 'http://echarts.baidu.com/option.html#title.link', //主标题超文本链接,
-            //subtext: '熟悉title的配置项', //副标题
-            left: 50, //配置title的位置
-            padding: [5, 20, 5, 10] //title的padding值
-          },
-          toolbox: {
-            show: true, //是否显示工具栏组件
-            orient: 'vertical', //工具栏icon的布局朝向
-            itemSize: 18, //工具栏icon的大小
-            itemGap: 20, //item之间的间距
-            right: 20, //toolbox的定位位置
-            feature: {
-              saveAsImage: {
-                show: true
-              }, //导出图片
-              dataView: {
-                show: true
-              }, //数据视图
-              magicType: { //动态类型切换
-                type: ['line', 'bar']
-              },
-              dataZoom: {
-                show: true
-              }, //数据区域缩放
-              restore: {
-                show: true
-              }, //重置
-            },
-          },
-          markPoint: {
-            data: [{
-                type: 'max',
-                name: '最大值'
-              },
-              {
-                type: 'min',
-                name: '最小值'
-              }
-            ]
-          },
-          markLine: {
-            data: [{
-                type: 'average',
-                name: '平均值'
-              },
-              {
-                type: 'max',
-                name: '最大值'
-              },
-              {
-                type: 'min',
-                name: '最小值'
-              }
-            ]
-          },
-          tooltip: {
-            trigger: 'axis' //通过哪种方式触发tip
-          },
-          xAxis: {
-            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
-            name: '产品'
-          },
-          yAxis: {},
-          series: [{
-            name: '销量',
-            type: 'line',
-            data: [10, 20, 36, 10, 10, 20],
-            itemStyle: {
-              normal: {
-                color: 'hotpink'
-              }
-            }
-          }],
-        });
+        myChart2.setOption(this.self)
+        window.onresize = function() {
+          myChart2.resize(); //若有多个图表变动，可多写
+        }
       },
       drawLine3() {
         let myChart3 = this.$echarts.init(document.getElementById('myChart3'))
         myChart3.setOption({
           title: {
-            text: '各组信息记录',
-            subtext: 'show'
+            text: '各组工作量',
+            subtext: '各项指标',
+             left: 'center'
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '20%',
+            containLabel: true
           },
           tooltip: {
             trigger: 'axis'
           },
-          legend: {
+           legend: {
+            orient: 'vertical',
+            left: 'left',
             data: ['接通数', '对话时长']
           },
+         
           toolbox: {
             show: true,
             feature: {
@@ -362,7 +386,6 @@
                   color: "rgba(179,127,235,0.5)",
                   areaStyle: {
                     type: 'default',
-    
                     width: 2,
                   }
                 }
@@ -398,15 +421,17 @@
                   color: '#b6eeff',
                   areaStyle: {
                     type: 'default',
-                    width:2
+                    width: 2
                   }
                 }
               },
               data: [5, 10, 20, 30, 40, 60, 100],
-              
             },
           ]
-        }, )
+        });
+        window.onresize = function() {
+          myChart3.resize(); //若有多个图表变动，可多写
+        }
       }
     },
     components: {}
@@ -460,17 +485,31 @@
   }
   .Notice {
     width: 300px;
+    height: 495px;
+    overflow-y: scroll;
     background: white;
     border-radius: 10px;
     padding: 15px;
   }
+  .Notice::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 10px;
+    /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+  }
   .exhale {
     height: 350px;
+  }
+  .myChart3 {
+    padding: 0;
+    margin: 0;
+    border: solid 1px red;
   }
   .exhale-main {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
   }
   .mainNum {
     display: flex;
@@ -486,5 +525,17 @@
   }
   .manyi {
     background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .more {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    border: solid 1px red;
   }
 </style>

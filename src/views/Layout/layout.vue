@@ -4,32 +4,55 @@
       <div class='header'>
         <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" :size='55'></el-avatar>
         <div class='typeCon'>
-          <div class='type'><i class='el-icon-goods'></i></div>
-          <el-dropdown @command="handleCommand" class='type'>
-            <span class="el-dropdown-link">
-                            En
-                            </span>
+          <div class='type' @click="close"><i class='el-icon-unlock'></i></div>
+          <el-dropdown @command="handleCommand" class='type' trigger='click' placement='top'>
+            <span class="el-dropdown-link">En</span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="中文">中文</el-dropdown-item>
               <el-dropdown-item command="英文">英文</el-dropdown-item>
               <el-dropdown-item command="韩文" disabled>韩文</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <div class='type'><i class='el-icon-message
-                           '></i></div>
-          <el-dropdown @command="handleCommand" class='type'>
+          <el-dropdown @command="handleCommand" class='type' trigger='click' placement='top'>
             <span class="el-dropdown-link">
-                            En
-                            </span>
+                            
+                                                   <i class='el-icon-message
+                                                                              '></i>
+                                                    </span>
             <el-dropdown-menu slot="dropdown">
-              <p>你有4条消息</p>
-              <el-dropdown-item command="">第一条消息</el-dropdown-item>
-              <el-dropdown-item command="">第一条消息</el-dropdown-item>
-            
+              <p style='padding:0 0 10px 10px;border-bottom:solid 1px #e8e9ec;color:#ffa940;font-size:17px'>你有2条消息
+                <i class='el-icon-message-solid
+                '></i>
+              </p>
+              <el-dropdown-item command="" class='dropdown-item'>
+                <div class='MesCon'>
+                  <div class='messagejk'>
+                    <span class='titleMes'>今日无预览</span>
+                    <div class='titleCon'>
+                      <i class='el-icon-time'></i>
+                      <span>4天前</span>
+                    </div>
+                  </div>
+                  <b style='padding-left:2px;'>你有一个考试需要留意</b>
+                </div>
+              </el-dropdown-item>
+              <el-dropdown-item command="" class='dropdown-item'>
+                <div class='MesCon'>
+                  <div class='messagejk'>
+                    <span class='titleMes'>待办事项需处理</span>
+                    <div class='titleCon'>
+                      <i class='el-icon-time'></i>
+                      <span>5天前</span>
+                    </div>
+                  </div>
+                  <b style='padding-left:2px;'>你有一个培训需要留意</b>
+                </div>
+              </el-dropdown-item>
+               <p class='lookall'>查看所有的消息</p>
+           
             </el-dropdown-menu>
           </el-dropdown>
-          <div class='type'><i class='el-icon-edit-outline
-                                                    '></i></div>
+          <div class='type' @click="open"><i class='el-icon-switch-button'></i></div>
         </div>
       </div>
       <div class='TabCon'>
@@ -98,8 +121,62 @@
       handleClick(tab, event) {
         console.log(tab, event);
       },
+      //下拉菜单选中
       handleCommand(command) {
         this.$message('click on item ' + command);
+      },
+      //注销
+      open() {
+        const h = this.$createElement;
+        this.$msgbox({
+          title: '提示',
+          message: h('p', null, [
+            h('span', null, '确定要注销吗? '),
+            h('i', {
+              style: 'color: teal'
+            }, )
+          ]),
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          beforeClose: (action, instance, done) => {
+            if (action === 'confirm') {
+              instance.confirmButtonLoading = true;
+              instance.confirmButtonText = '正在执行...';
+              setTimeout(() => {
+                done();
+                setTimeout(() => {
+                  instance.confirmButtonLoading = false;
+                }, 300);
+              }, 3000);
+            } else {
+              done();
+            }
+          }
+        }).then(action => {
+          this.$message({
+            type: 'info',
+            message: '已注销: ' + action
+          });
+        });
+      },
+      //锁屏
+      close() {
+        this.$confirm('锁屏后需重新登录，确定要锁屏吗', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '锁屏成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消锁屏'
+          });
+        });
       }
     }
   };
@@ -115,6 +192,35 @@
       position: fixed;
       top: 0;
       z-index: 999;
+    }
+  }
+  .dropdown-item {
+    padding: 0;
+  }
+  .dropdown-item:not(:last-child) {
+    border-bottom: solid 1px #e8e9ec;
+  }
+  .MesCon {
+    padding: 0 10px 0 10px;
+  }
+.lookall{
+  margin-top:12px;
+  display:flex;
+  justify-content:center;
+  font-size:13px;
+}
+  .messagejk {
+    display: flex;
+    width: 220px;
+    justify-content: space-between;
+    align-items: center;
+    .titleMes {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .titleCon {
+      color: #a1a0ae;
+      font-size: 11px;
     }
   }
   .is_fixed {
