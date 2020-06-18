@@ -48,7 +48,7 @@
                   <b style='padding-left:2px;'>你有一个培训需要留意</b>
                 </div>
               </el-dropdown-item>
-               <p class='lookall'>查看所有的消息</p>
+               <p class='lookall'>查看所有消息</p>
            
             </el-dropdown-menu>
           </el-dropdown>
@@ -185,6 +185,7 @@
   .layout {
     width: 100%;
     height: 100%;
+
     .fix-header {
       width: 100%;
       display: flex;
@@ -208,6 +209,7 @@
   display:flex;
   justify-content:center;
   font-size:13px;
+  cursor:pointer;
 }
   .messagejk {
     display: flex;

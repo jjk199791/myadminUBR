@@ -18,7 +18,7 @@
           <el-col :span="6" class="grid-content">
             <el-row type="flex" class='exhale-main'>
               <el-col :span="8" class='bg-blue'>
-                <i class='el-icon-goods' style="font-size:50px;color:white"></i>
+                <i class='el-icon-document' style="font-size:50px;color:white"></i>
               </el-col>
               <el-col :span="16">
                 <div class='mainNum'>
@@ -44,7 +44,7 @@
           <el-col :span="6" class="grid-content">
             <el-row type="flex" class='exhale-main'>
               <el-col :span="8" class='bg-blue skyblue'>
-                <i class='el-icon-tickets' style="font-size:50px;color:white"></i>
+                <i class='el-icon-document-copy' style="font-size:50px;color:white"></i>
               </el-col>
               <el-col :span="16">
                 <div class='mainNum'>
@@ -56,10 +56,12 @@
           </el-col>
         </el-row>
         <el-tabs type="border-card" class='exhale'>
-          <el-tab-pane label="电话呼出量">
+          <el-tab-pane label="本组工作量">
             <div id="myChart2" :style="{width:'1400px',height:'350px'}"></div>
           </el-tab-pane>
-          <el-tab-pane label="平均呼出量">定时任务补偿</el-tab-pane>
+          <el-tab-pane label="投诉组工作量">
+            <div id="myChart3" :style="{width:'1400px',height:'350px'}"></div>
+          </el-tab-pane>
         </el-tabs>
       </el-col>
     </el-row>
@@ -69,11 +71,8 @@
       </el-col>
       <el-col :span='17' class='right'>
         <el-tabs type="border-card" class='exhale'>
-          <el-tab-pane label="当天接听量">
-            <div id="myChart3" :style="{width:'1400px',height:'320px'}"></div>
-          </el-tab-pane>
-          <el-tab-pane label="当天通话总长">
-            <div id="myChart1" :style="{width:'400px',height:'320px'}"></div>
+          <el-tab-pane label="各组工作量">
+            <div id='myChart5' :style="{width:'1400px',height:'320px'}"></div>
           </el-tab-pane>
         </el-tabs>
       </el-col>
@@ -132,69 +131,8 @@
           },
         ],
         //满意度
-        manyi: {
-          // backgroundColor: 'rgba(0,0,0,.1)',
-          title: {
-            text: '满意度排名',
-            left: 'center',
-            top: 20,
-            textStyle: {
-              color: 'black'
-            }
-          },
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
-          visualMap: {
-            show: false,
-            min: 80,
-            max: 600,
-            inRange: {
-              colorLightness: [0, 1]
-            }
-          },
-          series: [{
-            name: '访问来源',
-            type: 'pie',
-            radius: '55%',
-            center: ['50%', '50%'],
-            data: [{
-                value: 335,
-                name: 'Voice'
-              },
-              {
-                value: 310,
-                name: 'Chat'
-              },
-            ].sort(function(a, b) {
-              return a.value - b.value;
-            }),
-            roseType: 'radius',
-            label: {
-              color: 'rgba(255, 255, 255, 0.3)'
-            },
-            labelLine: {
-              lineStyle: {
-                color: 'rgba(255, 255, 255, 0.3)'
-              },
-              smooth: 0.2,
-              length: 10,
-              length2: 20
-            },
-            itemStyle: {
-              color: '#c23531',
-              shadowBlur: 200,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            },
-            animationType: 'scale',
-            animationEasing: 'elasticOut',
-            animationDelay: function(idx) {
-              return Math.random() * 200;
-            }
-          }]
-        },
         manyidu: {
+          color: ['#c3daff', '#ffca83'],
           title: {
             text: '满意度排名',
             // subtext: '纯属虚构',
@@ -232,16 +170,15 @@
             }
           }]
         },
-        self: {
-          color: ['#3398DB'],
-          title: {
-            text: '本组工作量',
-            left: 'center'
-          },
+        others: {
+          color: ['#85e9b7', 'skyblue', '#ffa940'],
           tooltip: {
             trigger: 'axis',
-            axisPointer: { // 坐标轴指示器，坐标轴触发有效
-              type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+            axisPointer: {
+              type: 'cross',
+              crossStyle: {
+                color: '#999'
+              }
             }
           },
           grid: {
@@ -250,23 +187,73 @@
             bottom: '20%',
             containLabel: true
           },
+          toolbox: {
+            feature: {
+              dataView: {
+                show: true,
+                readOnly: false
+              },
+              magicType: {
+                show: true,
+                type: ['line', 'bar']
+              },
+              restore: {
+                show: true
+              },
+              saveAsImage: {
+                show: true
+              }
+            }
+          },
+          legend: {
+            data: ['接听量', '对话总长', '平均通话时长']
+          },
           xAxis: [{
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            axisTick: {
-              alignWithLabel: true
+            data: ['一组', '二组', '三组', '四组', '五组', '六组', '七组', '八组', '九组', '十组'],
+            axisPointer: {
+              type: 'shadow'
             }
           }],
           yAxis: [{
-            type: 'value'
-          }],
+              type: 'value',
+              name: '对话总长',
+              min: 0,
+              max: 300,
+              interval: 30,
+              axisLabel: {
+                formatter: '{value} m'
+              }
+            },
+            {
+              type: 'value',
+              name: '平均通话时长',
+              min: 0,
+              max: 300,
+              interval: 30,
+              axisLabel: {
+                formatter: '{value} m'
+              }
+            }
+          ],
           series: [{
-            name: '直接访问',
-            type: 'bar',
-            barWidth: '60%',
-            data: [10, 52, 200, 334, 390, 330, 220]
-          }]
-        }
+              name: '接听量',
+              type: 'bar',
+              data: [80, 90, 69, 36, 128, 230, 34, 42, 48, 62]
+            },
+            {
+              name: '对话总长',
+              type: 'bar',
+              data: [220.0, 114.9, 74.0, 123.2, 125.6, 76.7, 135.6, 32, 296.4, 133.3]
+            },
+            {
+              name: '平均通话时长',
+              type: 'line',
+              yAxisIndex: 1,
+              data: [42.0, 92.2, 23.3, 41.5, 62.3, 30.2, 33.0, 56.5, 92.0, 61.2]
+            }
+          ]
+        },
       }
     },
     created() {
@@ -277,10 +264,10 @@
     },
     computed: {},
     mounted() {
-      this.drawLineManyi()
       this.drawLine();
       this.drawLine3();
-      this.drawLine4()
+      this.drawLine4(),
+        this.drawLine5()
     },
     methods: {
       showMore() {
@@ -293,15 +280,6 @@
         }
       },
       //满意度
-      drawLineManyi() {
-        // 基于准备好的dom，初始化echarts实例
-        let myChart = this.$echarts.init(document.getElementById('myChart1'))
-        // 绘制图表
-        myChart.setOption(this.manyi)
-        window.onresize = function() {
-          myChart.resize();
-        }
-      },
       drawLine4() {
         let myChart4 = this.$echarts.init(document.getElementById('myChart4'))
         // 绘制图表
@@ -317,18 +295,11 @@
         // 基于准备好的dom，初始化echarts实例
         let myChart2 = this.$echarts.init(document.getElementById('myChart2'))
         // 绘制图表
-        myChart2.setOption(this.self)
-        window.onresize = function() {
-          myChart2.resize(); //若有多个图表变动，可多写
-        }
-      },
-      drawLine3() {
-        let myChart3 = this.$echarts.init(document.getElementById('myChart3'))
-        myChart3.setOption({
+        myChart2.setOption({
           title: {
-            text: '各组工作量',
+            text: '本组工作量',
             subtext: '各项指标',
-             left: 'center'
+            left: 'center'
           },
           grid: {
             left: '3%',
@@ -339,22 +310,21 @@
           tooltip: {
             trigger: 'axis'
           },
-           legend: {
+          legend: {
             orient: 'vertical',
             left: 'left',
             data: ['接通数', '对话时长']
           },
-         
           toolbox: {
             show: true,
             feature: {
-              mark: {
-                show: true
-              },
-              dataView: {
-                show: true,
-                readOnly: false
-              },
+              // mark: {
+              //   show: true
+              // },
+              // dataView: {
+              //   show: true,
+              //   readOnly: false
+              // },
               magicType: {
                 show: true,
                 type: ['line', 'bar', 'stack', 'tiled']
@@ -371,7 +341,7 @@
           xAxis: [{
             type: 'category',
             boundaryGap: false,
-            data: ['一组', '二组', '三组', '四组', '五组', '六组', '七组']
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
           }],
           yAxis: [{
             type: 'value'
@@ -390,7 +360,7 @@
                   }
                 }
               },
-              data: [3, 10, 21, 54, 100, 49, 32],
+              data: [23, 10, 41, 54, 100, 29, 82],
               areaStyle: {
                 color: {
                   type: 'linear',
@@ -430,7 +400,125 @@
           ]
         });
         window.onresize = function() {
+          myChart2.resize(); //若有多个图表变动，可多写
+        }
+      },
+      drawLine3() {
+        let myChart3 = this.$echarts.init(document.getElementById('myChart3'))
+        myChart3.setOption({
+          title: {
+            text: '投诉工作量',
+            subtext: '各项指标',
+            left: 'center'
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '20%',
+            containLabel: true
+          },
+          tooltip: {
+            trigger: 'axis'
+          },
+          legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['接通数', '对话时长']
+          },
+          toolbox: {
+            show: true,
+            feature: {
+              // mark: {
+              //   show: true
+              // },
+              // dataView: {
+              //   show: true,
+              //   readOnly: false
+              // },
+              magicType: {
+                show: true,
+                type: ['line', 'bar', 'stack', 'tiled']
+              },
+              restore: {
+                show: true
+              },
+              saveAsImage: {
+                show: true
+              }
+            }
+          },
+          calculable: true,
+          xAxis: [{
+            type: 'category',
+            boundaryGap: false,
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          }],
+          yAxis: [{
+            type: 'value'
+          }],
+          series: [{
+              name: '接通数',
+              type: 'line',
+              smooth: true,
+              symbol: 'none',
+              itemStyle: {
+                normal: {
+                  color: "rgba(239,120,35,0.5)",
+                  areaStyle: {
+                    type: 'default',
+                    width: 2,
+                  }
+                }
+              },
+              data: [3, 10, 21, 54, 100, 49, 32],
+              areaStyle: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [{
+                    offset: 0,
+                    color: 'rgba(179,127,235,0.5)' // 0% 处的颜色
+                  }, {
+                    offset: 0.5,
+                    color: 'rgba(179,127,235,0.3)' // 100% 处的颜色
+                  }, {
+                    offset: 1,
+                    color: 'rgba(179,127,235,0.1)' // 100% 处的颜色
+                  }],
+                  global: false // 缺省为 false
+                }
+              }
+            },
+            {
+              name: '对话时长',
+              type: 'line',
+              smooth: true,
+              itemStyle: {
+                normal: {
+                  color: '#cfc',
+                  areaStyle: {
+                    type: 'default',
+                    width: 2
+                  }
+                }
+              },
+              data: [5, 10, 20, 30, 40, 60, 100],
+            },
+          ]
+        });
+        window.onresize = function() {
           myChart3.resize(); //若有多个图表变动，可多写
+        }
+      },
+      drawLine5() {
+        let myChart5 = this.$echarts.init(document.getElementById('myChart5'))
+        // 绘制图表
+        myChart5.setOption(this.others)
+        window.onresize = function() {
+          myChart5.resize(); //若有多个图表变动，可多写
         }
       }
     },
