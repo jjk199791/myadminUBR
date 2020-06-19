@@ -6,23 +6,22 @@
         <div class='typeCon'>
           <div class='type' @click="close"><i class='el-icon-unlock'></i></div>
           <el-dropdown @command="handleCommand" class='type' trigger='click' placement='top'>
-            <span class="el-dropdown-link">En</span>
+            <span class="el-dropdown-link">{{language}}</span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="中文">中文</el-dropdown-item>
-              <el-dropdown-item command="英文">英文</el-dropdown-item>
-              <el-dropdown-item command="韩文" disabled>韩文</el-dropdown-item>
+              <el-dropdown-item command="zh">中文</el-dropdown-item>
+              <el-dropdown-item command="en">英文</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
           <el-dropdown @command="handleCommand" class='type' trigger='click' placement='top'>
             <span class="el-dropdown-link">
-                            
-                                                   <i class='el-icon-message
-                                                                              '></i>
-                                                    </span>
+                                                          
+                                                                                 <i class='el-icon-message
+                                                                                                            '></i>
+                                                                                  </span>
             <el-dropdown-menu slot="dropdown">
               <p style='padding:0 0 10px 10px;border-bottom:solid 1px #e8e9ec;color:#ffa940;font-size:17px'>你有2条消息
                 <i class='el-icon-message-solid
-                '></i>
+                                              '></i>
               </p>
               <el-dropdown-item command="" class='dropdown-item'>
                 <div class='MesCon'>
@@ -48,8 +47,7 @@
                   <b style='padding-left:2px;'>你有一个培训需要留意</b>
                 </div>
               </el-dropdown-item>
-               <p class='lookall'>查看所有消息</p>
-           
+              <p class='lookall'>查看所有消息</p>
             </el-dropdown-menu>
           </el-dropdown>
           <div class='type' @click="open"><i class='el-icon-switch-button'></i></div>
@@ -57,9 +55,19 @@
       </div>
       <div class='TabCon'>
         <div class='TabChoose'>
-          <router-link :to="item.src" v-for="(item,index) in navData" :key="index">
+          <router-link to='/'>
             <div class='tab'>
-              <i :class='item.icon'></i> {{item.title}}
+              <i class='el-icon-goods'></i><span>{{$t('m.homepage')}}</span>
+            </div>
+          </router-link>
+          <router-link to='/exam'>
+            <div class='tab'>
+              <i class='el-icon-user'></i><span>{{$t('m.exam')}}</span>
+            </div>
+          </router-link>
+          <router-link to='/system'>
+            <div class='tab'>
+              <i class='el-icon-help'></i><span>{{$t('m.system')}}</span>
             </div>
           </router-link>
         </div>
@@ -73,26 +81,29 @@
   export default {
     data() {
       return {
+        locale: 'zh',
         isFixed: false,
         offsetTop: 0,
+        language: 'zh',
         navData: [{
-            title: "门户",
+            title: this.$t('m.homepage'),
             src: "/",
             icon: 'el-icon-goods'
           },
           {
-            title: "培训考试",
+            title: this.$t('m.exam'),
             src: "/exam",
             icon: 'el-icon-user'
           },
           {
-            title: "系统管理",
+            title: this.$t('m.system'),
             src: "/system",
             icon: 'el-icon-help'
           }
         ]
       }
     },
+    computed: {},
     // created() {
     //   // var heightStyle = this.$refs.ele.style.height;
     //   var heightCss = window.getComputedStyle(this.$refs.ele).height;
@@ -122,8 +133,22 @@
         console.log(tab, event);
       },
       //下拉菜单选中
-      handleCommand(command) {
-        this.$message('click on item ' + command);
+      handleCommand(temp) {
+        if (temp == 'en') {
+          this.$i18n.locale = 'en';
+          this.language = this.$i18n.locale
+          console.log(this.$i18n.locale)
+        } else {
+          this.$i18n.locale = 'zh';
+          this.language = this.$i18n.locale
+          console.log(this.$i18n.locale)
+        }
+        // localStorage.language = temp;
+        // console.log(this.$i18n.locale)
+        // this.$i18n.locale = 'zh',
+        //   localStorage.setItem('lang', 'zh')
+        // console.log(this.$i18n.locale)
+        // this.$message('click on item ' + command);
       },
       //注销
       open() {
@@ -185,7 +210,6 @@
   .layout {
     width: 100%;
     height: 100%;
-
     .fix-header {
       width: 100%;
       display: flex;
@@ -204,13 +228,13 @@
   .MesCon {
     padding: 0 10px 0 10px;
   }
-.lookall{
-  margin-top:12px;
-  display:flex;
-  justify-content:center;
-  font-size:13px;
-  cursor:pointer;
-}
+  .lookall {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    font-size: 13px;
+    cursor: pointer;
+  }
   .messagejk {
     display: flex;
     width: 220px;
